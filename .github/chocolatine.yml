@@ -1,0 +1,112 @@
+# This file is used to check the coding style, compile the
+# repository, run the tests on the repository and push the
+# repository to the Epitech repository.
+# For the name a true evidence of the power of the Chocolatine.
+name : A Chocolatine is always good
+
+# Run on all pushes and pull requests unless
+# the branch name starts with "ga-ignore-".
+on :
+  push :
+    branches :
+      - '!ga-ignore-*'
+  pull_request :
+    branches :
+      - '!ga-ignore-*'
+
+# Define the jobs to run.
+# Each job is a set of steps that will be run when you push or
+# open a pull request.
+# If a job fails, the next jobs will not be run.
+jobs :
+
+  # Make a coding style check on the repository.
+  check_coding_style :
+    runs-on : ubuntu-latest
+    container :
+      image : ghrc.io/epitech/coding-style-checker:latest
+    steps :
+      - name : Checkout
+        uses : actions/checkout@v2
+
+      - name : Check coding style
+        run : check.sh ../../ ../../
+        continue-on-error : true
+
+      - name : Display coding style errors
+        if : ${{ job.status == 'failure' }}
+        run : |
+          echo "::error file=coding-style-reports.log::Coding style errors found."
+
+      - name : Stop if coding style errors found
+        if : ${{ job.status == 'failure' }}
+        run : exit 1
+
+  # Make a compilation check on the repository.
+  check_program_compilation :
+    runs-on : ubuntu-latest
+    container :
+      image : epitechcontent/epitest-docker
+    steps :
+      - name : Checkout
+        uses : actions/checkout@v2
+
+      - name : Check program compilation
+        run : make -C ../../
+        timeout-minutes : 2
+
+      - name : Stop if compilation failed
+        if : ${{ job.status == 'failure' }}
+        run : exit 1
+
+      - name : Clean
+        run : make clean -C ../../
+
+      - name : Check if executable exists
+        run : |
+          for exec_path in $(echo $EXECUTABLES | tr ','); do
+            if [ ! -x "$exec_path" ]; then
+              echo "Executable $path not found."
+              exit 1
+            fi
+          done
+
+  # Run the tests on the repository.
+  run_tests :
+    runs-on : ubuntu-latest
+    container :
+      image : epitechcontent/epitest-docker
+    steps :
+      - name : Checkout
+        uses : actions/checkout@v2
+
+      - name : Run tests
+        run : make tests_run -C ../../
+        timeout-minutes : 2
+
+      - name : Stop if tests failed
+        if : ${{ job.status == 'failure' }}
+        run : exit 1
+
+      - name : Clean
+        run : |
+          make fclean -C ../../
+          rm -f ../../*.gcda
+          rm -f ../../*.gcno
+          rm -f ../../tests/test.out*
+
+  # Push the repository to the Epitech repository only on push.
+  push_to_mirror :
+    runs-on : ubuntu-latest
+    if : github.event_name == 'push'
+    steps :
+      - name : Checkout
+        uses : actions/checkout@v2
+        with :
+          fetch-depth : 0
+
+      - name : Push to mirror
+        uses: pixta-dev/repository-mirroring-action@v1.1.1
+        with :
+          target_repo_url: ${{ secrets.MIRROR_URL }}
+          ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
