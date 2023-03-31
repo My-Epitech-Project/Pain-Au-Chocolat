@@ -61,7 +61,7 @@ jobs :
           if [ -s coding-style-reports.log ]; then
             exit 1
           else
-            echo "::success::No coding style errors found."
+            echo "No coding style errors found."
           fi
 
   # Make a compilation check on the repository
@@ -80,6 +80,7 @@ jobs :
         timeout-minutes : 2
 
       - name : Stop if compilation failed
+        if : ${{ failure() }}
         run : exit 1
 
       - name : Clean
