@@ -9,6 +9,11 @@ on: [push, pull_request]
 
 
 
+# Define the permissions
+permissions: write-all
+
+
+
 # Run the tests and upload the coverage
 jobs:
   coverage:
