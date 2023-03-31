@@ -59,13 +59,9 @@ jobs:
           cargo build && cp target/debug/ftest ./ftest
           cd ..
 
-      - name: Run ftests
-        run: |
-          ./ftest/ftest > ftest.log
-        continue-on-error: true
-
       - name: Display results
         run: |
+          ./ftest/ftest > ftest.log
           if [[ $? -ne 0 ]]; then
             IFS=$'\n'
             STR1=""
@@ -86,3 +82,4 @@ jobs:
             success=$(tail -n 1 ftest.log)
             echo "::notice::$success"
           fi
+        continue-on-error: true
