@@ -1,0 +1,137 @@
+name = "Chocolatine health checks"
+
+always_stop_after_failure = false
+
+[defaults]
+command.expected.exit_code = 0
+
+# Repository structure
+
+[[test]]
+name = "Makefile at the root of the repository"
+type = "path_exists"
+path = "Makefile"
+target_type = "file"
+
+[[test]]
+name = "README exists"
+type = "path_exists"
+path = "README.md"
+target_type = "file"
+
+[[test]]
+name = "Source directory exists"
+type = "path_exists"
+path = "src"
+target_type = "directory"
+
+[[test]]
+name = "Include directory exists"
+type = "path_exists"
+path = "include"
+target_type = "directory"
+
+[[test]]
+name = "Tests directory exists"
+type = "path_exists"
+path = "tests"
+target_type = "directory"
+
+# Compilation
+
+[[test]]
+name = "Root Makefile fclean"
+type = "command"
+command = "make fclean"
+
+[[test]]
+name = "Root Makefile compilation"
+type = "command"
+command = "make"
+
+[[test]]
+name = "Chocolatine executable correct name"
+type = "path_exists"
+path = "chocolatine"
+target_type = "file"
+
+[[test]]
+name = "Chocolatine binary generated after root Makefile compilation"
+type = "path_exists"
+path = "chocolatine"
+target_type = "file"
+
+[[test]]
+name = "Root Makefile clean rule"
+type = "command"
+command = "make clean"
+
+[[test]]
+name = "Root Makefile fclean rule"
+type = "command"
+command = "make fclean"
+
+[[test]]
+name = ".github directory exists"
+type = "path_exists"
+path = ".github"
+target_type = "directory"
+
+[[test]]
+name = "Workflows directory exists"
+type = "path_exists"
+path = ".github/workflows"
+target_type = "directory"
+
+[[test]]
+name = "chocolatine.yml exists"
+type = "path_exists"
+path = ".github/workflows/chocolatine.yml"
+target_type = "file"
+
+[[test]]
+name = "coverage.yml exists"
+type = "path_exists"
+path = ".github/workflows/coverage.yaml"
+target_type = "file"
+
+[[test]]
+name = "discord.yml exists"
+type = "path_exists"
+path = ".github/workflows/discord.yaml"
+target_type = "file"
+
+# Coding style
+
+[[test]]
+name = "Clean coding style"
+type = "command"
+command = "docker run --rm -i -v \"$(pwd):/mnt/delivery\" -v \"$(pwd):/mnt/reports\" ghcr.io/epitech/coding-style-checker:latest /mnt/delivery /mnt/reports && cat coding-style-reports.log ; rm -f coding-style-reports.log"
+
+# PROJECT TESTING
+
+# Error
+
+[[test]]
+name = "Root Makefile re rule"
+type = "command"
+command = "make re"
+
+[[test]]
+name = "Handling wrong number of arguments"
+type = "command"
+command = "./chocolatine azerezgy"
+expected.exit_code = 84
+
+[[test]]
+name = "Handling wrong number of arguments 2"
+type = "command"
+command = "./chocolatine tests/"
+expected.exit_code = 84
+
+# Success
+
+[[test]]
+name = "Handling correct number of arguments"
+type = "command"
+command = "./chocolatine"
