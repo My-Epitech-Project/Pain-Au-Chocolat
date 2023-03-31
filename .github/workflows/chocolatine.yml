@@ -120,9 +120,9 @@ jobs :
       - name : Test execution
         run : |
           if [ -f tests/test.out ]; then
-            echo "::notice::Test successful."
+            echo "::notice::Successful test execution."
           else
-            echo "::warning::Test failed or inexistant."
+            echo "::warning::Test failed or not available."
           fi
 
   # Push the repository to the Epitech repository only on push.
@@ -146,4 +146,4 @@ jobs :
 
       - name : Push successful
         if : success()
-        run : echo "::notice::Push successful."
+        run : echo "::notice::Successful mirroring process."
