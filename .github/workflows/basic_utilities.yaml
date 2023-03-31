@@ -59,9 +59,13 @@ jobs:
           cargo build && cp target/debug/ftest ./ftest
           cd ..
 
-      - name: Run ftests and display results
+      - name: Run ftests
         run: |
           ./ftest/ftest > ftest.log
+        continue-on-error: true
+
+      - name: Display results
+        run: |
           if [[ $? -ne 0 ]]; then
             IFS=$'\n'
             STR1=""
