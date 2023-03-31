@@ -1,0 +1,7 @@
+chocolatine
+*.a
+*.o
+*.iml
+.idea/
+.vscode/
+*.log
