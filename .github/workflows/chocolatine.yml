@@ -56,9 +56,14 @@ jobs :
           cat coding-style-reports.log | while read line; do
             echo "::error file=$(echo $line | cut -d ':' -f 1),\
           line=$(echo $line | cut -d ':' -f 2),title=$(echo $line | cut -d ':' -f 3)"\
-          coding style error"::$(echo $line | cut -d ':' -f 4)"
+           coding style error"::$(echo $line | cut -d ':' -f 4)"
           done
-
+          var='cat coding-style-reports.log'
+          if [ -z "$var" ]; then
+            echo "No coding style errors."
+          else
+            exit 1
+          fi
 
   # Make a compilation check on the repository
   # and check if the executable exists.
