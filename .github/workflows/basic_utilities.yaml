@@ -64,24 +64,26 @@ jobs:
           ./ftest/ftest > ftest.log
         continue-on-error: true
 
-      - name: Display error
-        if: ${{ failure() }}
+      - name: Display errors
         run: |
           ./ftest/ftest > ftest.log
-          IFS=$'\n'
-          STR1=""
-          STR2=""
-          for line in $(cat ftest.log | grep Failed --before-context=2); do
-            if [[ $line != *"Failed"* && $line == *"----"* ]]; then
-              STR1=$line
-            elif [[ $line != *"Failed"* && $line != *"----"* ]]; then
-              STR2=$line
-            fi
-            if [[ $line == *"Failed"* ]]; then
-              echo "::error file=,line=,title=$STR1::$STR2"
-            fi
-          done
-          exit 1
+          if [[ $? -ne 0 ]]; then
+            IFS=$'\n'
+            STR1=""
+            STR2=""
+            for line in $(cat ftest.log | grep Failed --before-context=2); do
+              if [[ $line != *"Failed"* && $line == *"----"* ]]; then
+                STR1=$line
+              elif [[ $line != *"Failed"* && $line != *"----"* ]]; then
+                STR2=$line
+              fi
+              if [[ $line == *"Failed"* ]]; then
+                echo "::error file=,line=,title=$STR1::$STR2"
+              fi
+            done
+            exit 1
+          fi
+        continue-on-error: true
 
       - name: Display results
         run: |
