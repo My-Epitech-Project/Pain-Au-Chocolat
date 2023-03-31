@@ -41,7 +41,7 @@ fclean:			clean
 re:		fclean all
 		@rm -rf $(OBJ)
 
-run_tests: fclean all $(NAME)
+tests_run: fclean all $(NAME)
 		$(CC) -o tests/test.out $(SRC_TESTS) $(SRC_TEST) $(CFLAGS_TEST)
 		./tests/test.out --verbose
 		gcovr --exclude tests/
