@@ -14,6 +14,16 @@ on :
     branches :
       - '!ga-ignore-*'
 
+# Define the environment variables.
+env :
+  # The list of executables to check.
+  # The executables must be separated by a comma.
+  EXECUTABLES : chocolatine
+
+  # The URL of the mirror repository.
+  MIRROR_URL : git@github.com:EpitechPromo2027/B-DOP-200-NAN-2-1-chocolatine-marius.pain.git
+
+
 # Define the jobs to run.
 # Each job is a set of steps that will be run when you push or
 # open a pull request.
@@ -21,6 +31,8 @@ on :
 jobs :
 
   # Make a coding style check on the repository.
+  # The coding style checker will return an error if it finds
+  # coding style errors.
   check_coding_style :
     runs-on : ubuntu-latest
     container :
@@ -42,7 +54,8 @@ jobs :
         if : ${{ job.status == 'failure' }}
         run : exit 1
 
-  # Make a compilation check on the repository.
+  # Make a compilation check on the repository
+  # and check if the executable exists.
   check_program_compilation :
     runs-on : ubuntu-latest
     container :
@@ -64,14 +77,17 @@ jobs :
 
       - name : Check if executable exists
         run : |
-          for exec_path in $(echo $EXECUTABLES | tr ','); do
+          IFS=','
+          for exec_path in $EXECUTABLES; do
             if [ ! -x "$exec_path" ]; then
-              echo "Executable $path not found."
+              echo "Executable not found."
               exit 1
             fi
           done
 
   # Run the tests on the repository.
+  # The tests will be run in the Epitest
+  # Docker container.
   run_tests :
     runs-on : ubuntu-latest
     container :
@@ -108,5 +124,5 @@ jobs :
       - name : Push to mirror
         uses: pixta-dev/repository-mirroring-action@v1.1.1
         with :
-          target_repo_url: ${{ secrets.MIRROR_URL }}
+          target_repo_url: ${{ env.MIRROR_URL }}
           ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
