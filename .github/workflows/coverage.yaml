@@ -19,6 +19,7 @@ permissions: write-all
 jobs:
   coverage:
     runs-on: ubuntu-latest
+    if : github.event_name == 'pull_request'
     container:
       image: epitechcontent/epitest-docker
     steps:
