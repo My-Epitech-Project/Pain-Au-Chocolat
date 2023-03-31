@@ -10,11 +10,11 @@ name : A Chocolatine is always good
 # the branch name starts with "ga-ignore-".
 on :
   push :
-    branches :
-      - '!ga-ignore-**'
+    branches-ignore :
+      - 'ga-ignore-**'
   pull_request :
-    branches :
-      - '!ga-ignore-**'
+    branches-ignore :
+      - 'ga-ignore-**'
 
 
 
