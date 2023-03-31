@@ -41,6 +41,7 @@ jobs :
   # is made to the repository.
   push :
     runs-on : ubuntu-latest
+    if : github.event_name == 'push'
     steps :
       - name : Send a notification to Discord
         uses : Ilshidur/action-discord@master
@@ -48,11 +49,14 @@ jobs :
           args : 'A push was made to the repository.'
         env :
           DISCORD_WEBHOOK : ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_NAME : ${{ env.BOT_NAME }}
+          DISCORD_AVATAR : ${{ env.BOT_AVATAR }}
 
   # Send a notification to Discord when a pull
   # request is opened.
   pull_request_opened :
     runs-on : ubuntu-latest
+    if : github.event_name == 'pull_request' && github.event.action == 'opened'
     steps :
       - name : Send a notification to Discord
         uses : Ilshidur/action-discord@master
@@ -60,11 +64,14 @@ jobs :
           args : 'A pull request was opened.'
         env :
           DISCORD_WEBHOOK : ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_NAME : ${{ env.BOT_NAME }}
+          DISCORD_AVATAR : ${{ env.BOT_AVATAR }}
 
   # Send a notification to Discord when a pull
   # request is closed.
   pull_request_closed :
     runs-on : ubuntu-latest
+    if : github.event_name == 'pull_request' && github.event.action == 'closed'
     steps :
       - name : Send a notification to Discord
         uses : Ilshidur/action-discord@master
@@ -72,11 +79,14 @@ jobs :
           args : 'A pull request was closed.'
         env :
           DISCORD_WEBHOOK : ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_NAME : ${{ env.BOT_NAME }}
+          DISCORD_AVATAR : ${{ env.BOT_AVATAR }}
 
   # Send a notification to Discord when an issue
   # is opened.
   issue_opened :
     runs-on : ubuntu-latest
+    if : github.event_name == 'issues' && github.event.action == 'opened'
     steps :
       - name : Send a notification to Discord
         uses : Ilshidur/action-discord@master
@@ -84,11 +94,14 @@ jobs :
           args : 'An issue was opened.'
         env :
           DISCORD_WEBHOOK : ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_NAME : ${{ env.BOT_NAME }}
+          DISCORD_AVATAR : ${{ env.BOT_AVATAR }}
 
   # Send a notification to Discord when an issue
   # is closed.
   issue_closed :
     runs-on : ubuntu-latest
+    if : github.event_name == 'issues' && github.event.action == 'closed'
     steps :
       - name : Send a notification to Discord
         uses : Ilshidur/action-discord@master
@@ -96,4 +109,6 @@ jobs :
           args : 'An issue was closed.'
         env :
           DISCORD_WEBHOOK : ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_NAME : ${{ env.BOT_NAME }}
+          DISCORD_AVATAR : ${{ env.BOT_AVATAR }}
 
