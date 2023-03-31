@@ -45,14 +45,18 @@ jobs :
       image : ghcr.io/epitech/coding-style-checker:latest
     steps :
       - name : Checkout
-        uses : actions/checkout@v2
+        uses : actions/checkout@v3.3.0
 
       - name : Check coding style
         run : check.sh $(pwd) $(pwd)
         continue-on-error : true
 
-      - name : temp
-        run : exit 0
+      - name : Display coding style errors
+        run : |
+          cat coding-style-reports.log | while read line; do
+            echo "::error file=$line"
+          done
+
 
   # Make a compilation check on the repository
   # and check if the executable exists.
@@ -63,7 +67,7 @@ jobs :
       image : epitechcontent/epitest-docker
     steps :
       - name : Checkout
-        uses : actions/checkout@v2
+        uses : actions/checkout@v3.3.0
 
       - name : Check program compilation
         run : make
@@ -96,7 +100,7 @@ jobs :
       image : epitechcontent/epitest-docker
     steps :
       - name : Checkout
-        uses : actions/checkout@v2
+        uses : actions/checkout@v3.3.0
 
       - name : Run tests
         run : make tests_run
@@ -110,7 +114,7 @@ jobs :
     if : github.event_name == 'push'
     steps :
       - name : Checkout
-        uses : actions/checkout@v2
+        uses : actions/checkout@v3.3.0
         with :
           fetch-depth : 0
 
