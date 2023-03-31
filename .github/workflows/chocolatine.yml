@@ -90,7 +90,7 @@ jobs:
           IFS=','
           for exec_path in $EXECUTABLES; do
             if [ ! -x "$exec_path" ]; then
-              echo "Executable not found."
+              echo "::error::Executable not found."
               exit 1
             else
               echo "::notice::Executable found: $exec_path"
