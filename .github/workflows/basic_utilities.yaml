@@ -1,0 +1,64 @@
+# Make many basics useful tests like
+# - check if the repository is not too big
+# - Run ftests
+name: Basics Useful Tests
+
+
+# Run on all pushes and pull requests unless
+# the branch name starts with "ga-ignore-".
+on:
+  push:
+    branches-ignore:
+      - 'ga-ignore-**'
+  pull_request:
+    branches-ignore:
+      - 'ga-ignore-**'
+
+
+# Define the environment variables.
+env:
+
+  # The maximum size of the repository in bytes.
+  SIZE_LIMIT: 30000000
+
+
+# Define the jobs to run.
+# Each job is a set of steps that are run in parallel.
+jobs:
+
+
+  check_size:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
+
+      - name: Check size
+        run: |
+          var=$(du -sb --exclude=".git")
+          size=$(echo $var | cut -d ' ' -f 1 | cut -d 'K' -f 1 | awk '{print $1}')
+          if [[ $size -gt $SIZE_LIMIT ]]; then
+            echo "::error::The repository is too big ($size > $SIZE_LIMIT)"
+              exit 1
+          else
+            echo "::notice::The repository is not too big ($size < $SIZE_LIMIT)"
+          fi
+  
+
+  # Run the ftests.
+  ftests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
+      
+      - name: Install dependencies
+        run: |
+          git clone https://github.com/Atomot/ftest.git
+          cd ftest
+          ./run_ftest.sh
+          cd ..
+      
+      - name: Run ftests
+        run: |
+          ftest
