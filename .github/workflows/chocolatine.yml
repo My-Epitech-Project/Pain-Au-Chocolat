@@ -4,15 +4,19 @@
 # For the name a true evidence of the power of the Chocolatine.
 name : A Chocolatine is always good
 
+
+
 # Run on all pushes and pull requests unless
 # the branch name starts with "ga-ignore-".
 on :
   push :
     branches :
-      - '!ga-ignore-*'
+      - '!ga-ignore-**'
   pull_request :
     branches :
-      - '!ga-ignore-*'
+      - '!ga-ignore-**'
+
+
 
 # Define the environment variables.
 env :
@@ -24,11 +28,13 @@ env :
   MIRROR_URL : git@github.com:EpitechPromo2027/B-DOP-200-NAN-2-1-chocolatine-marius.pain.git
 
 
+
 # Define the jobs to run.
 # Each job is a set of steps that will be run when you push or
 # open a pull request.
 # If a job fails, the next jobs will not be run.
 jobs :
+
 
   # Make a coding style check on the repository.
   # The coding style checker will return an error if it finds
@@ -53,6 +59,7 @@ jobs :
       - name : Stop if coding style errors found
         if : ${{ job.status == 'failure' }}
         run : exit 1
+
 
   # Make a compilation check on the repository
   # and check if the executable exists.
@@ -85,6 +92,7 @@ jobs :
             fi
           done
 
+
   # Run the tests on the repository.
   # The tests will be run in the Epitest
   # Docker container.
@@ -110,6 +118,7 @@ jobs :
           rm -f ../../*.gcda
           rm -f ../../*.gcno
           rm -f ../../tests/test.out*
+
 
   # Push the repository to the Epitech repository only on push.
   push_to_mirror :
