@@ -3,7 +3,6 @@
 name: Discord Notifications
 
 
-
 # Run on all pushes and pull requests unless
 # the branch name starts with "ga-ignore-".
 on:
@@ -22,7 +21,6 @@ on:
       - closed
 
 
-
 # Define the environment variables.
 env:
 
@@ -31,7 +29,6 @@ env:
 
   # The avatar of the bot.
   BOT_AVATAR: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
-
 
 
 # Define the jobs to run.
@@ -112,4 +109,3 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_NAME: ${{ env.BOT_NAME }}
           DISCORD_AVATAR: ${{ env.BOT_AVATAR }}
-

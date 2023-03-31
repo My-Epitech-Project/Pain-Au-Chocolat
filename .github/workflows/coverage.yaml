@@ -1,20 +1,21 @@
-# Display the coverage of the tests
-# with gcovr
+# Display the coverage of the tests on
+# pull requests
 name: Coverage
 
 
+# Run on every pull request
+on:
+  pull_request:
+    branches-ignore:
+      - 'ga-ignore-**'
 
-# Run on every push and pull request
-on: [push, pull_request]
 
-
-
-# Define the permissions
+# Define the permissions to write on the PR
 permissions: write-all
 
 
-
-# Run the tests and upload the coverage
+# Run the tests, generate the coverage and
+# display it on the PR
 jobs:
   coverage:
     runs-on: ubuntu-latest

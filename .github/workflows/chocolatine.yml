@@ -5,7 +5,6 @@
 name: A Chocolatine is always good
 
 
-
 # Run on all pushes and pull requests unless
 # the branch name starts with "ga-ignore-".
 on:
@@ -17,7 +16,6 @@ on:
       - 'ga-ignore-**'
 
 
-
 # Define the environment variables.
 env:
 
@@ -27,7 +25,6 @@ env:
 
   # The URL of the mirror repository.
   MIRROR_URL: git@github.com:EpitechPromo2027/B-DOP-200-NAN-2-1-chocolatine-marius.pain.git
-
 
 
 # Define the jobs to run.
@@ -64,6 +61,7 @@ jobs:
           else
             echo "::notice::No coding style error found."
           fi
+
 
   # Make a compilation check on the repository
   # and check if the executable exists.
@@ -124,6 +122,7 @@ jobs:
           else
             echo "::warning::Test failed or not available."
           fi
+
 
   # Push the repository to the Epitech repository only on push.
   # The push will be done using the SSH key stored in the
