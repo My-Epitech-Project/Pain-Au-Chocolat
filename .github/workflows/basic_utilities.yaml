@@ -43,7 +43,7 @@ jobs:
           else
             echo "::notice::The repository is not too big ($size < $SIZE_LIMIT)"
           fi
-  
+
 
   # Run the ftests.
   ftests:
@@ -51,14 +51,34 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3.3.0
-      
+
       - name: Install dependencies
         run: |
           git clone https://github.com/Atomot/ftest.git
           cd ftest
-          ./run_ftest.sh
+          cargo build && cp target/debug/ftest ./ftest
           cd ..
-      
-      - name: Run ftests
+
+      - name: Run ftests and display results
         run: |
-          ftest
+          ./ftest/ftest > ftest.log
+          if [[ $? -ne 0 ]]; then
+            IFS=$'\n'
+            STR1=""
+            STR2=""
+            for line in $(cat ftest.log | grep Failed --before-context=2); do
+              if [[ $line != *"Failed"* && $line == *"----"* ]]; then
+                STR1=$line
+              elif [[ $line != *"Failed"* && $line != *"----"* ]]; then
+                STR2=$line
+              fi
+              if [[ $line == *"Failed"* ]]; then
+                echo "::error file=,line=,title=$STR1::$STR2"
+              fi
+            done
+            exit 1
+          else
+            echo "::notice::All ftests passed"
+            success=$(tail -n 1 ftest.log)
+            echo "::notice::$success"
+          fi
