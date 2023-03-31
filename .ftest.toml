@@ -80,19 +80,19 @@ target_type = "directory"
 [[test]]
 name = "Workflows directory exists"
 type = "path_exists"
-path = ".github/workflows"
+path = ".github/workflws"
 target_type = "directory"
 
 [[test]]
 name = "chocolatine.yml exists"
 type = "path_exists"
-path = ".github/workflows/chocolatine.yml"
+path = ".github/workflows/chocoatine.yml"
 target_type = "file"
 
 [[test]]
 name = "coverage.yml exists"
 type = "path_exists"
-path = ".github/workflows/coverage.yaml"
+path = ".github/workflows/coveage.yaml"
 target_type = "file"
 
 [[test]]
