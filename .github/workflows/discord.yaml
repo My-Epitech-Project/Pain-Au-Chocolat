@@ -49,7 +49,7 @@ jobs :
           args : 'A push was made to the repository.'
         env :
           DISCORD_WEBHOOK : ${{ secrets.DISCORD_WEBHOOK }}
-          DISCORD_NAME : ${{ env.BOT_NAME }}
+          DISCORD_USERNAME : ${{ env.BOT_NAME }}
           DISCORD_AVATAR : ${{ env.BOT_AVATAR }}
 
   # Send a notification to Discord when a pull
@@ -64,7 +64,7 @@ jobs :
           args : 'A pull request was opened.'
         env :
           DISCORD_WEBHOOK : ${{ secrets.DISCORD_WEBHOOK }}
-          DISCORD_NAME : ${{ env.BOT_NAME }}
+          DISCORD_USERNAME : ${{ env.BOT_NAME }}
           DISCORD_AVATAR : ${{ env.BOT_AVATAR }}
 
   # Send a notification to Discord when a pull
@@ -79,7 +79,7 @@ jobs :
           args : 'A pull request was closed.'
         env :
           DISCORD_WEBHOOK : ${{ secrets.DISCORD_WEBHOOK }}
-          DISCORD_NAME : ${{ env.BOT_NAME }}
+          DISCORD_USERNAME : ${{ env.BOT_NAME }}
           DISCORD_AVATAR : ${{ env.BOT_AVATAR }}
 
   # Send a notification to Discord when an issue
@@ -94,7 +94,7 @@ jobs :
           args : 'An issue was opened.'
         env :
           DISCORD_WEBHOOK : ${{ secrets.DISCORD_WEBHOOK }}
-          DISCORD_NAME : ${{ env.BOT_NAME }}
+          DISCORD_USERNAME : ${{ env.BOT_NAME }}
           DISCORD_AVATAR : ${{ env.BOT_AVATAR }}
 
   # Send a notification to Discord when an issue
